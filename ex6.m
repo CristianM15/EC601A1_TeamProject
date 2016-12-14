@@ -1,19 +1,21 @@
 
 %% Initialization
-clear ; close all; clc
-
+%clear ; close all; clc
+function Predict= ex6(file,Test, prediction)
 
 fprintf('Loading and Visualizing Data ...\n')
 
 % Load from ex6data2: 
 % You will have X, y in your environment
-data = load('9.csv');
+data = load(file);
 X = data(:, [1, 3]); y = data(:, 2);
+
+data2 = load(Test);
+test = data2(:, [1, 3]); y = data2(:, 2);
 
 % Plot training data
 plotData(X, y);
 
-fprintf('Program paused. Press enter to continue.\n');
 
 
 %  SVM classifier.
@@ -30,10 +32,10 @@ C = 1; sigma = 0.1;
 model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma)); 
 visualizeBoundary(X, y, model);
 
-fprintf('Program paused. Press enter to continue.\n');
-
-
-p = svmPredict(model, X);
+p = svmPredict(model, test);
 fprintf('Training Accuracy: %f\n', mean(double(p == y)) * 100);
-p2 = svmPredict(model, [36 2.1]);
+p2 = svmPredict(model, prediction);
+Predict = p2
+fprintf('prediction: %f\n', p2)
+end
 
